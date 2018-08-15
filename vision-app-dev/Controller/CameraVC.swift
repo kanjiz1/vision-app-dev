@@ -8,6 +8,9 @@
 
 import UIKit
 import AVFoundation
+import CoreML
+import Vision
+import Speech
 
 class CameraVC: UIViewController {
     
@@ -69,12 +72,29 @@ class CameraVC: UIViewController {
     
     @objc func didTapCameraView(){
         let settings = AVCapturePhotoSettings()
-        let previewPixelType = settings.availablePreviewPhotoPixelFormatTypes.first!
-        let previewFormat = [kCVPixelBufferPixelFormatTypeKey as String: previewPixelType, kCVPixelBufferWidthKey as String: 160, kCVPixelBufferHeightKey as String: 160]
         
-        settings.previewPhotoFormat = previewFormat
-        
+        settings.previewPhotoFormat = settings.embeddedThumbnailPhotoFormat
         cameraOutput.capturePhoto(with: settings, delegate: self)
+        
+        
+        //        let previewPixelType = settings.availablePreviewPhotoPixelFormatTypes.first!
+        //        let previewFormat = [kCVPixelBufferPixelFormatTypeKey as String: previewPixelType, kCVPixelBufferWidthKey as String: 160, kCVPixelBufferHeightKey as String: 160]
+    }
+    
+    func resultsMethod(request: VNRequest, error: Error?){
+        guard let results = request.results as? [VNClassificationObservation] else {return}
+        
+        for classification in results {
+            if classification.confidence < 0.5 {
+                self.identificationLbl.text = "I'm not sure what this is. Please try again."
+                self.confidenceLbl.text = ""
+                break
+            } else {
+                self.identificationLbl.text = classification.identifier
+                self.confidenceLbl.text = "CONFIDENCE: \(Int(classification.confidence * 100))%"
+                break 
+            }
+        }
     }
 }
 
@@ -84,6 +104,16 @@ extension CameraVC: AVCapturePhotoCaptureDelegate {
             debugPrint(error)
         } else {
             photoData = photo.fileDataRepresentation()
+            
+            do {
+                let model = try VNCoreMLModel(for: SqueezeNet().model)
+                let request = VNCoreMLRequest(model: model, completionHandler: resultsMethod)
+                let handler = VNImageRequestHandler(data: photoData!)
+                try handler.perform([request])
+            } catch {
+                debugPrint(error)
+            }
+            
             self.captureImageView.image = UIImage(data: photoData!)
         }
     }
