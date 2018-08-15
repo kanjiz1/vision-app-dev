@@ -75,14 +75,19 @@
                                     <constraint firstAttribute="height" constant="60" id="oCW-wh-mlI"/>
                                 </constraints>
                             </view>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="ezA-QV-f9G">
+                                <rect key="frame" x="291" y="573" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="ezA-QV-f9G" firstAttribute="centerY" secondItem="RbY-B6-1KP" secondAttribute="centerY" id="4m6-Iq-vOa"/>
                             <constraint firstAttribute="trailingMargin" secondItem="6fJ-eo-2lK" secondAttribute="trailing" constant="20" id="Fxx-8x-jwL"/>
                             <constraint firstItem="bJk-Lj-IL7" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="G3i-G0-LYE"/>
                             <constraint firstItem="5TY-Rq-lca" firstAttribute="top" secondItem="RbY-B6-1KP" secondAttribute="bottom" constant="20" id="QIF-3b-FvN"/>
                             <constraint firstItem="dj4-yw-jfE" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="W1r-vY-gqV"/>
                             <constraint firstItem="6fJ-eo-2lK" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="30" id="WaQ-iC-wtL"/>
+                            <constraint firstItem="ezA-QV-f9G" firstAttribute="centerX" secondItem="RbY-B6-1KP" secondAttribute="centerX" id="Z6z-Er-BWt"/>
                             <constraint firstItem="6fJ-eo-2lK" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="Z81-6K-bBF"/>
                             <constraint firstItem="5TY-Rq-lca" firstAttribute="top" secondItem="dj4-yw-jfE" secondAttribute="bottom" constant="20" id="fIk-aO-uT1"/>
                             <constraint firstItem="bJk-Lj-IL7" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailing" id="i5c-Yo-cUs"/>
@@ -98,6 +103,7 @@
                         <outlet property="flashBtn" destination="dj4-yw-jfE" id="yIx-mE-qTE"/>
                         <outlet property="identificationLbl" destination="HFl-NZ-g8X" id="KI4-SG-VwW"/>
                         <outlet property="roundedLabelView" destination="6fJ-eo-2lK" id="wnj-HI-Yb4"/>
+                        <outlet property="spinner" destination="ezA-QV-f9G" id="cQo-V5-03H"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
