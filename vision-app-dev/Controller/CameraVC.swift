@@ -12,6 +12,11 @@ import CoreML
 import Vision
 import Speech
 
+enum FlashState {
+    case off
+    case on
+}
+
 class CameraVC: UIViewController {
     
     var captureSession: AVCaptureSession!
@@ -19,6 +24,7 @@ class CameraVC: UIViewController {
     var previewLayer: AVCaptureVideoPreviewLayer!
     
     var photoData: Data?
+    var flashControlState: FlashState = .off
 
     @IBOutlet weak var captureImageView: RoundedShadowImageView!
     @IBOutlet weak var flashBtn: RoundedShadowButton!
@@ -34,6 +40,8 @@ class CameraVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         previewLayer.frame = cameraView.bounds
+        
+        flashBtn.addTarget(self, action: #selector(flashBtnWasPressed(_:)), for: .touchUpInside)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -70,10 +78,28 @@ class CameraVC: UIViewController {
         }
     }
     
+    @objc func flashBtnWasPressed(_ sender: Any){
+        switch flashControlState {
+        case .off:
+            flashBtn.setTitle("FLASH ON", for: .normal)
+            flashControlState = .on
+        case .on:
+            flashBtn.setTitle("FLASH OFF", for: .normal)
+            flashControlState = .off
+        }
+    }
+    
     @objc func didTapCameraView(){
         let settings = AVCapturePhotoSettings()
         
         settings.previewPhotoFormat = settings.embeddedThumbnailPhotoFormat
+        
+        if flashControlState == .off{
+            settings.flashMode = .off
+        } else {
+            settings.flashMode = .on
+        }
+        
         cameraOutput.capturePhoto(with: settings, delegate: self)
         
         
